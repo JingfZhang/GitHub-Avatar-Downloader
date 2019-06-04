@@ -16,21 +16,21 @@ function getRepoContributors(repoOwner, repoName, cb) {
   };
 
   request(option, function(err, res, body) {
-    let bodyArray = JSON.parse(body);
-    for(let objct of bodyArray) {
-      cb(err, objct.avatar_url);
-    }
+    cb(err, body);
   });
+}
 
 function downloadImageByURL(url, filePath) {
   request.get(url)
          .pipe(fs.createWriteStream(filePath));
 }
 
-}
-
-function printAvatarUrl(err, avatarUrl){
-  console.log(avatarUrl);
+function printAvatarUrl(err, body){
+  let bodyArray = JSON.parse(body);
+  for(let objct of bodyArray) {
+    let savePath = "./" + objct.login + ".jpg";
+    downloadImageByURL(objct.avatar_url, savePath);
+  }
 }
 
 getRepoContributors("jquery", "jquery", printAvatarUrl);

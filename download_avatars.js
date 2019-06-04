@@ -2,6 +2,14 @@ const request = require("request");
 const secrets = require("./secrets.js");
 const fs = require("fs");
 
+const repoOwnerAndName = process.argv.slice(2);
+
+const owner = repoOwnerAndName[0];
+const repo = repoOwnerAndName[1];
+if(!owner || !repo) {
+  console.log("Enter both repoOwner and repoName.");
+  process.exit();
+}
 
 console.log("Welcome to the GitHub Avatar Downloader!");
 
@@ -34,4 +42,4 @@ function printAvatarUrl(err, body){
   }
 }
 
-getRepoContributors("jquery", "jquery", printAvatarUrl);
+getRepoContributors(owner, repo, printAvatarUrl);
